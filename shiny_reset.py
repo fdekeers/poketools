@@ -1,8 +1,9 @@
 import sounddevice as sd
 import scipy.io.wavfile as siw
+import nxbt
 
 FREQ = 44100   # Default sampling frequency
-DELTA = 0.001  # Delta for element equality
+DELTA = 0.18   # Delta for element equality
 
 
 def crop_sound_array(sound_array, freq, start_time, end_time):
@@ -17,7 +18,7 @@ def init_shiny_template():
     freq, shiny_stars_array = siw.read(shiny_stars_file)
     # Crop start of the shiny stars recording
     start_time = 0.155  # Start time [s] to crop to
-    end_time = 0.70     # End time [s] to crop to
+    end_time = 0.4     # End time [s] to crop to
     shiny_stars_array = crop_sound_array(shiny_stars_array, freq, start_time, end_time)
     return freq, shiny_stars_array
 
@@ -48,11 +49,16 @@ def contains_subarray(array, subarray, delta):
 
 if __name__ == "__main__":
 
+    # Initialize template shiny array
     freq, shiny_template_array = init_shiny_template()
 
-    '''
     # Record game sound
     duration = 5  # Recording duration [s]
+    print("Recording game sound...")
     recording_array = record_game_sound(freq, duration)
-    '''
+
+    # Check if recording includes shiny stars
+    print("Checking presence of shiny...")
+    isShiny = contains_subarray(recording_array, shiny_template_array, DELTA)
+    print(isShiny)
 

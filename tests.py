@@ -12,25 +12,21 @@ def run_test_with_file(game_recording_file):
 
 class TestBase(unittest.TestCase):
     def test_base(self):
-        print("TEST: base")
         self.assertFalse(run_test_with_file("template_sounds/game_recording_base.wav"))
 
 
 class TestPokeball(unittest.TestCase):
     def test_pokeball(self):
-        print("TEST: pokeball")
         self.assertFalse(run_test_with_file("template_sounds/game_recording_pokeball.wav"))
 
 
 class TestIntimidate(unittest.TestCase):
     def test_intimidate(self):
-        print("TEST: intimidate")
         self.assertFalse(run_test_with_file("template_sounds/game_recording_intimidate.wav"))
 
 
 class TestShiny(unittest.TestCase):
     def test_shiny(self):
-        print("TEST: shiny")
         self.assertTrue(run_test_with_file("template_sounds/game_recording_shiny.wav"))
 
 
