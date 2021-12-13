@@ -97,8 +97,15 @@ if __name__ == "__main__":
         controller = synchronize_controller(nx)
         nx.macro(controller, macros.GO_BACK_TO_GAME_AFTER_SYNC)
 
-    '''
-    # Record game sound, and check if shiny sparkles are present
-    is_shiny = record_and_check_shiny(freq, shiny_template_array, REC_DURATION)
-    print(is_shiny)
-    '''
+    is_shiny = False
+    while True:
+        # Initiate battle with Pokemon
+        nx.macro(controller, macros.START_BATTLE)
+
+        # Record game sound, and check if shiny sparkles are present
+        #time.sleep(5)
+        #is_shiny = record_and_check_shiny(freq, shiny_template_array, REC_DURATION)
+        if is_shiny:
+            break
+        else:
+            nx.macro(controller, macros.RESET_GAME)
