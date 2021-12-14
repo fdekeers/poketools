@@ -1,4 +1,4 @@
-# automated-shiny-reset
+# Pokétools
 Tool to automate static Pokémon shiny resets in Pokémon BDSP.
 
 ### Usage
