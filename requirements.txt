@@ -1,0 +1,7 @@
+pathlib
+nxbt
+numpy<1.21,>=1.17
+sounddevice
+librosa
+scipy
+matplotlib

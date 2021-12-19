@@ -11,4 +11,4 @@ if __name__ == "__main__":
     sd.wait()
 
     # Save recording to file
-    siw.write("shiny_stars_recording.wav", freq, recording)
+    siw.write("template.wav", freq, recording)

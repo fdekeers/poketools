@@ -1,63 +1,46 @@
-import sounddevice as sd
-import scipy.io.wavfile as siw
+import os
+import stat
+import audio_template_finder as atf
+import matplotlib.pyplot as plt
 import nxbt
 import argparse
 import macros
 import time
 
-FREQ = 44100      # Default sampling frequency
-DELTA = 0.18      # Delta for element equality
-REC_DURATION = 5  # Game sound recording duration [s]
+
+# Configuration variables
+FREQ = 44100       # Default sampling frequency
+DELTA = 0.18       # Delta for element equality
+REC_DURATION = 5   # Game sound recording duration [s]
+SAVE_PLOT = False  # Save correlation plot
+
+# Audio files
+GAME_RECORDING_FILE = ".game_recording.wav"
+SHINY_AUDIO_FILE = "template_sounds/shiny/template_cropped.wav"
 
 
-def crop_sound_array(sound_array, freq, start_time, end_time):
-    start_idx = int(freq * start_time)
-    end_idx = int(freq * end_time)
-    return sound_array[start_idx:end_idx]
+def save_plot(correlation):
+    fig, ax = plt.subplots()
+    ax.plot(correlation)
+    plot_file = "correlation.png"
+    fig.savefig(plot_file)
+    permission = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH
+    os.chmod(plot_file, permission)
 
 
-def init_shiny_template():
-    # Shiny stars sound template
-    shiny_stars_file = "template_sounds/shiny_stars_recording.wav"
-    freq, shiny_stars_array = siw.read(shiny_stars_file)
-    # Crop start of the shiny stars recording
-    start_time = 0.155  # Start time [s] to crop to
-    end_time = 0.4     # End time [s] to crop to
-    shiny_stars_array = crop_sound_array(shiny_stars_array, freq, start_time, end_time)
-    return freq, shiny_stars_array
-
-
-def record_game_sound(freq, duration):
-    recording = sd.rec(int(duration*freq), samplerate=freq, channels=1)
-    sd.wait()
-    return recording
-
-
-def equals_with_delta(a, b, delta):
-    return abs(abs(a) - abs(b)) < delta
-
-
-def contains_subarray(array, subarray, delta):
-    for i in range(len(array)):
-        if equals_with_delta(subarray[0], array[i], delta):
-            i += 1
-            j = 1
-            while i < len(array) and j < len(subarray) \
-                    and equals_with_delta(subarray[j], array[i], delta):
-                i += 1
-                j += 1
-            if j == len(subarray):
-                return True
-    return False
-
-
-def record_and_check_shiny(freq, shiny_template_array, recording_duration):
+def record_and_check_shiny(freq, shiny_template_file, recording_duration):
     # Record game sound
     print("Recording game sound...")
-    recording_array = record_game_sound(freq, recording_duration)
-    # Check if recording includes shiny stars
+    atf.record_game_sound(freq, recording_duration, GAME_RECORDING_FILE)
+    # Check if recording includes shiny sparkles
     print("Checking presence of shiny...")
-    return contains_subarray(recording_array, shiny_template_array, DELTA)
+    is_shiny, correlation = atf.contains_sound(shiny_template_file, GAME_RECORDING_FILE)
+    # Plot correlation if required
+    if SAVE_PLOT:
+        save_plot(correlation)
+    # Delete game recording audio file
+    os.remove(GAME_RECORDING_FILE)
+    return is_shiny
 
 
 def synchronize_controller(nx):
@@ -84,11 +67,13 @@ if __name__ == "__main__":
            "and directly connect it to the console, " \
            "if this is not the first time you connect to a Switch."
     parser.add_argument("-r", "--reconnect", help=help, action="store_true")
+    help = "Use this flag to save a plot of the correlation between the recorded audio " \
+           "and the shiny sparkles audio template."
+    parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
     args = parser.parse_args()
+    SAVE_PLOT = args.plot_correlation
 
-    # Initialize template shiny sparkles array
-    freq, shiny_template_array = init_shiny_template()
-
+    """
     # Initialize and connect virtual game controller, then go back to game
     nx = nxbt.Nxbt()
     if args.reconnect:
@@ -104,8 +89,12 @@ if __name__ == "__main__":
 
         # Record game sound, and check if shiny sparkles are present
         #time.sleep(5)
-        #is_shiny = record_and_check_shiny(freq, shiny_template_array, REC_DURATION)
+        #is_shiny = record_and_check_shiny(FREQ, shiny_template_array, REC_DURATION)
         if is_shiny:
             break
         else:
             nx.macro(controller, macros.RESET_GAME)
+    """
+
+    is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
+    print(is_shiny)

@@ -11,11 +11,12 @@ and directly connect it to the console,
 if this is not the first time you connect to a Switch.
 
 ### Needed Python modules
-- `nxbt`
-- `sounddevice`
-- `scipy.io.wavfile`
+See requirements file `requirements.txt`.
+Install modules with the following command:
+```
+sudo python3 -m pip install -r requirements.txt
+```
 
-Use `sudo pip3 install MODULE` to install the modules.
 
 ### Console / game settings
 - Game sound setting
