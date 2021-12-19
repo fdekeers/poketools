@@ -73,7 +73,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     SAVE_PLOT = args.plot_correlation
 
-    """
     # Initialize and connect virtual game controller, then go back to game
     nx = nxbt.Nxbt()
     if args.reconnect:
@@ -83,18 +82,14 @@ if __name__ == "__main__":
         nx.macro(controller, macros.GO_BACK_TO_GAME_AFTER_SYNC)
 
     is_shiny = False
-    while True:
+    while not is_shiny:
         # Initiate battle with Pokemon
-        nx.macro(controller, macros.START_BATTLE)
+        #nx.macro(controller, macros.START_BATTLE)
 
         # Record game sound, and check if shiny sparkles are present
-        #time.sleep(5)
-        #is_shiny = record_and_check_shiny(FREQ, shiny_template_array, REC_DURATION)
+        time.sleep(10)
+        is_shiny, _ = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
         if is_shiny:
-            break
+            print("SHINY DETECTED ! Just catch it !")
         else:
             nx.macro(controller, macros.RESET_GAME)
-    """
-
-    is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
-    print(is_shiny)

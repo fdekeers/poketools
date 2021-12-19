@@ -4,7 +4,7 @@ import audio_template_finder as atf
 from pathlib import Path
 
 
-TEMPLATE_FILE   = "template_sounds/shiny/template_cropped.wav"
+TEMPLATE_FILE = "template_sounds/shiny/template_cropped.wav"
 CORRELATION_DIR = "correlations"
 
 
@@ -42,6 +42,13 @@ class TestShiny(unittest.TestCase):
     def test_shiny(self):
         file_to_test = "template_sounds/shiny/test/shiny.wav"
         correlation_file = f"{CORRELATION_DIR}/correlation_shiny.png"
+        self.assertTrue(run_test(file_to_test, correlation_file))
+
+
+class TestExternal(unittest.TestCase):
+    def test_shiny(self):
+        file_to_test = "template_sounds/shiny/test/rayquaza.wav"
+        correlation_file = f"{CORRELATION_DIR}/correlation_external.png"
         self.assertTrue(run_test(file_to_test, correlation_file))
 
 
