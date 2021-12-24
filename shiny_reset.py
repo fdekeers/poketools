@@ -51,22 +51,10 @@ def synchronize_controller(nx):
     return controller
 
 
-def reconnect_controller(nx):
-    controller = nx.create_controller(nxbt.PRO_CONTROLLER,
-                                      reconnect_address=nx.get_switch_addresses())
-    time.sleep(4)
-    print("Pro controller connected !")
-    return controller
-
-
 if __name__ == "__main__":
 
     # Command line arguments
     parser = argparse.ArgumentParser()
-    help = "Use this flag to bypass virtual controller synchronization, " \
-           "and directly connect it to the console, " \
-           "if this is not the first time you connect to a Switch."
-    parser.add_argument("-r", "--reconnect", help=help, action="store_true")
     help = "Use this flag to save a plot of the correlation between the recorded audio " \
            "and the shiny sparkles audio template."
     parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
@@ -75,11 +63,8 @@ if __name__ == "__main__":
 
     # Initialize and connect virtual game controller, then go back to game
     nx = nxbt.Nxbt()
-    if args.reconnect:
-        controller = reconnect_controller(nx)
-    else:
-        controller = synchronize_controller(nx)
-        nx.macro(controller, macros.GO_BACK_TO_GAME_AFTER_SYNC)
+    controller = synchronize_controller(nx)
+    nx.macro(controller, macros.GO_BACK_TO_GAME_AFTER_SYNC)
 
     is_shiny = False
     while not is_shiny:
@@ -91,5 +76,8 @@ if __name__ == "__main__":
         is_shiny, _ = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
         if is_shiny:
             print("SHINY DETECTED ! Just catch it !")
+            # Shiny ! Put console in sleep mode
+            nx.macro(controller, macros.SLEEP_MODE)
         else:
+            # Not shiny, reset game
             nx.macro(controller, macros.RESET_GAME)

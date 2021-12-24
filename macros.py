@@ -1,3 +1,7 @@
+"""
+List of macros used by the virtual controller.
+"""
+
 GO_BACK_TO_GAME_AFTER_SYNC = """
 2s
 A 0.1s
@@ -28,4 +32,9 @@ A 0.1s
 LOOP 150
     A 0.1s
     0.2s
+"""
+
+SLEEP_MODE = """
+HOME 2s
+A 0.1s
 """
