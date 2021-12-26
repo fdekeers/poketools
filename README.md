@@ -31,6 +31,8 @@ then stops.
 and make sure it is considered as an audio source (i.e. a microphone).
 - Make sure the game is running,
 and that your character is placed just in front of the stationary Pokémon.
+- Activate Bluetooth on your computer.
+- Disconnect all wired controllers from your console.
 - Go to the "Change Grip/Order" menu of your Nintendo Switch.
 - As different Pokémon can have different input sequences needed to start the battle,
 make sure the `START_BATTLE` macro, in the [macros.py](macros.py) file,

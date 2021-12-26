@@ -16,20 +16,21 @@ A 0.1s
 """
 
 START_BATTLE = """
-A 0.1s
-0.2s
-A 0.1s
+DPAD_UP 0.1s
+LOOP 10
+    A 0.1s
+    0.2s
 """
 
 RESET_GAME = """
 HOME 0.1s
-0.5s
+0.4s
 X 0.1s
-0.5s
+0.2s
 A 0.1s
-0.5s
+0.3s
 A 0.1s
-LOOP 150
+LOOP 119
     A 0.1s
     0.2s
 """
@@ -37,4 +38,9 @@ LOOP 150
 SLEEP_MODE = """
 HOME 2s
 A 0.1s
+"""
+
+BUSY_WAIT = """
+A 0.1s
+0.1s
 """
