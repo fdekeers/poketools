@@ -6,6 +6,7 @@ import nxbt
 import argparse
 import macros
 import time
+import dbus
 
 
 # Configuration variables
@@ -100,12 +101,12 @@ if __name__ == "__main__":
             nx.macro(controller, macros.START_BATTLE)
             # Wait for the shiny sparkles to appear,
             # while using the controller to prevent it from disconnecting
-            seconds = 8.8  # Change this depending on your battle loading time
+            seconds = 8.5  # Change this depending on your battle loading time
             busy_wait(controller, seconds)
             # Record game sound, and check if shiny sparkles are present
             is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
             proceed_shiny(is_shiny, controller)
-        except:  # A problem occurred, try to recover
+        except dbus.exceptions.DBusException:  # A problem occurred, try to recover
             is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, 10)
             print("Controller crashed, reconnecting...")
             controller = reconnect_controller(nx)
