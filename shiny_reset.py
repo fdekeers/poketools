@@ -74,8 +74,8 @@ def reconnect_controller(nx):
 
 
 def busy_wait(controller, seconds):
-    for _ in range(int(seconds * 5)):
-        nx.macro(controller, macros.BUSY_WAIT)
+    iterations = seconds * 5
+    nx.macro(controller, macros.BUSY_WAIT.format(iterations))
 
 
 if __name__ == "__main__":
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             nx.macro(controller, macros.START_BATTLE)
             # Wait for the shiny sparkles to appear,
             # while using the controller to prevent it from disconnecting
-            seconds = 8.5  # Change this depending on your battle loading time
+            seconds = 9  # Change this depending on your battle loading time
             busy_wait(controller, seconds)
             # Record game sound, and check if shiny sparkles are present
             is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
