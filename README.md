@@ -27,6 +27,10 @@ then stops.
 
 ### Prerequisites
 
+- Install the required audio libraries:
+```shell
+sudo apt-get install libasound-dev portaudio19-dev
+```
 - Connect your Nintendo Switch to your computer with an audio cable,
 and make sure it is considered as an audio source (i.e. a microphone).
 - Make sure the game is running,
