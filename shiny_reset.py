@@ -6,14 +6,14 @@ import nxbt
 import argparse
 import macros
 import time
-import dbus
+import threading
 
 
 # Configuration variables
-FREQ = 44100       # Default sampling frequency
-DELTA = 0.18       # Delta for element equality
-REC_DURATION = 3   # Game sound recording duration [s]
-SAVE_PLOT = False  # Save correlation plot
+FREQ = 44100               # Default sampling frequency
+REC_DURATION = 2.5         # Game sound recording duration [s]
+BATTLE_LOADING_TIME = 9.5  # Battle loading time [s]
+SAVE_PLOT = False          # Save correlation plot
 
 # Template audio file
 SHINY_AUDIO_FILE = "template_sounds/shiny/template_cropped.wav"
@@ -44,20 +44,6 @@ def record_and_check_shiny(freq, shiny_template_file, recording_duration):
     return is_shiny
 
 
-def proceed_shiny(is_shiny, controller):
-    global number_of_resets
-    if is_shiny:
-        print(f"Shiny found after {number_of_resets} resets.")
-        # Shiny ! Put console in sleep mode
-        nx.macro(controller, macros.SLEEP_MODE)
-        exit(0)
-    else:
-        # Not shiny, reset game
-        number_of_resets += 1
-        print(f"No shiny found. Reset n°{number_of_resets}.")
-        nx.macro(controller, macros.RESET_GAME)
-
-
 def synchronize_controller(nx):
     controller = nx.create_controller(nxbt.PRO_CONTROLLER)
     print('Please go to the "Change Grip/Order" menu of your Nintendo Switch, to connect the virtual controller.')
@@ -74,8 +60,13 @@ def reconnect_controller(nx):
 
 
 def busy_wait(controller, seconds):
-    iterations = seconds * 5
+    iterations = int(seconds * 5)
     nx.macro(controller, macros.BUSY_WAIT.format(iterations))
+
+
+def busy_wait_background(controller, seconds):
+    thread = threading.Thread(target=busy_wait, args=(controller, seconds))
+    thread.start()
 
 
 if __name__ == "__main__":
@@ -95,19 +86,21 @@ if __name__ == "__main__":
 
     is_shiny = False
     while not is_shiny:
-        # Main loop in a try...except block to restart in case of crash
-        try:
-            # Initiate battle with Pokemon
-            nx.macro(controller, macros.START_BATTLE)
-            # Wait for the shiny sparkles to appear,
-            # while using the controller to prevent it from disconnecting
-            seconds = 9  # Change this depending on your battle loading time
-            busy_wait(controller, seconds)
-            # Record game sound, and check if shiny sparkles are present
-            is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
-            proceed_shiny(is_shiny, controller)
-        except dbus.exceptions.DBusException:  # A problem occurred, try to recover
-            is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, 10)
-            print("Controller crashed, reconnecting...")
-            controller = reconnect_controller(nx)
-            proceed_shiny(is_shiny, controller)
+        # Initiate battle with Pokemon
+        nx.macro(controller, macros.START_BATTLE)
+        # Wait for the shiny sparkles to appear,
+        # while using the controller to prevent it from disconnecting
+        busy_wait(controller, BATTLE_LOADING_TIME)
+        # Record game sound, and check if shiny sparkles are present
+        busy_wait_background(controller, REC_DURATION)
+        is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
+        if is_shiny:
+            print(f"Shiny found after {number_of_resets} resets.")
+            # Shiny ! Put console in sleep mode
+            nx.macro(controller, macros.SLEEP_MODE)
+            exit(0)
+        else:
+            # Not shiny, reset game
+            number_of_resets += 1
+            print(f"No shiny found. Reset n°{number_of_resets}.")
+            nx.macro(controller, macros.RESET_GAME)
