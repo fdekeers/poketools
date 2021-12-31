@@ -24,7 +24,7 @@ LOOP 10
 
 RESET_GAME = """
 HOME 0.1s
-0.4s
+0.5s
 X 0.1s
 0.2s
 A 0.1s
