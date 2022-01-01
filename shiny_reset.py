@@ -10,10 +10,10 @@ import threading
 
 
 # Configuration variables
-FREQ = 44100               # Default sampling frequency
-REC_DURATION = 2.5         # Game sound recording duration [s]
-BATTLE_LOADING_TIME = 9.5  # Battle loading time [s]
-SAVE_PLOT = False          # Save correlation plot
+FREQ = 44100             # Default sampling frequency
+REC_DURATION = 2.5       # Game sound recording duration [s]
+BATTLE_LOADING_TIME = 9  # Battle loading time [s]
+SAVE_PLOT = False        # Save correlation plot
 
 # Template audio file
 SHINY_AUDIO_FILE = "template_sounds/shiny/template_cropped.wav"

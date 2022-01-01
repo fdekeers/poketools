@@ -16,7 +16,7 @@ A 0.1s
 """
 
 START_BATTLE = """
-DPAD_UP 0.1s
+L_STICK@+000+100 0.3s
 LOOP 10
     A 0.1s
     0.2s
