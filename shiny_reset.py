@@ -12,7 +12,7 @@ import threading
 # Configuration variables
 FREQ = 44100             # Default sampling frequency
 REC_DURATION = 2.5       # Game sound recording duration [s]
-BATTLE_LOADING_TIME = 9  # Battle loading time [s]
+BATTLE_LOADING_TIME = 9.2  # Battle loading time [s]
 SAVE_PLOT = False        # Save correlation plot
 
 # Template audio file
