@@ -23,8 +23,10 @@ LOOP 10
 """
 
 RESET_GAME = """
-HOME 0.1s
+HOME 0.05s
 0.5s
+B 0.1s
+0.1s
 X 0.1s
 0.2s
 A 0.1s
