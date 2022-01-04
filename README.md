@@ -8,13 +8,6 @@ namely:
 - Stationary Pokémon shiny reset
 - Masuda breeding (WORK IN PROGRESS)
 
-Those tools require some Python modules to be installed.
-They are referenced in the [requirements.txt](requirements.txt) file.
-To install them, use the command:
-```shell
-sudo python3 -m pip install -r requirements.txt
-```
-
 ## Stationary Pokémon shiny reset
 
 Use this tool to automate the reset of stationary Pokémon,
@@ -27,9 +20,13 @@ then stops.
 
 ### Prerequisites
 
-- Install the required audio libraries:
+- Install the required libraries:
 ```shell
-sudo apt-get install libasound-dev portaudio19-dev
+sudo apt-get install libasound-dev portaudio19-dev libatlas-base-dev
+```
+- Install the required Python modules:
+```shell
+sudo python3 -m pip install -r requirements.txt
 ```
 - Connect your Nintendo Switch to your computer with an audio cable,
 and make sure it is considered as an audio source (i.e. a microphone).
