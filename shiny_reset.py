@@ -80,7 +80,9 @@ if __name__ == "__main__":
     SAVE_PLOT = args.plot_correlation
 
     # Initialize and connect virtual game controller, then go back to game
+    print("Initializing...")
     nx = nxbt.Nxbt()
+    time.sleep(5)  # Add delay for the Raspberry Pi
     controller = synchronize_controller(nx)
     nx.macro(controller, macros.GO_BACK_TO_GAME_AFTER_SYNC)
 
