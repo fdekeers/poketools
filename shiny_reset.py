@@ -11,8 +11,9 @@ import threading
 
 # Configuration variables
 FREQ = 44100             # Default sampling frequency
-REC_DURATION = 2.5       # Game sound recording duration [s]
-BATTLE_LOADING_TIME = 9.2  # Battle loading time [s]
+REC_DURATION = 4       # Game sound recording duration [s]
+GAME_LOADING_TIME = 32   # Game loading time [s]
+BATTLE_LOADING_TIME = 11  # Battle loading time [s]
 SAVE_PLOT = False        # Save correlation plot
 
 # Template audio file
@@ -106,3 +107,4 @@ if __name__ == "__main__":
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
             nx.macro(controller, macros.RESET_GAME)
+            busy_wait(controller, GAME_LOADING_TIME)
