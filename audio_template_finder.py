@@ -6,7 +6,7 @@ from scipy import signal
 # Configuration variable
 START_TIME = 0.155  # Start time [s] to crop the template sound to
 END_TIME = 0.6      # End time [s] to crop the template sound to
-THRESHOLD = 20      # Correlation threshold
+THRESHOLD = 25      # Correlation threshold
 
 
 def record_game_sound(freq, duration):
