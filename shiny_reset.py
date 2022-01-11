@@ -16,7 +16,8 @@ BATTLE_LOADING_TIME = 9.2  # Battle loading time [s]
 SAVE_PLOT = False        # Save correlation plot
 
 # Template audio file
-SHINY_AUDIO_FILE = "template_sounds/shiny/template_cropped.wav"
+script_directory = os.path.dirname(os.path.abspath(__file__))
+SHINY_AUDIO_FILE = f"{script_directory}/template_sounds/shiny/template_cropped.wav"
 
 # Number of resets
 number_of_resets = 0
@@ -25,7 +26,7 @@ number_of_resets = 0
 def save_plot(correlation):
     fig, ax = plt.subplots()
     ax.plot(correlation)
-    plot_file = "correlation.png"
+    plot_file = f"{script_directory}/correlation.png"
     fig.savefig(plot_file)
     permission = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH
     os.chmod(plot_file, permission)
