@@ -30,6 +30,7 @@ def save_plot(correlation):
     fig.savefig(plot_file)
     permission = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH
     os.chmod(plot_file, permission)
+    fig.close()
 
 
 def record_and_check_shiny(freq, shiny_template_file, recording_duration):
@@ -40,7 +41,7 @@ def record_and_check_shiny(freq, shiny_template_file, recording_duration):
     print("Checking presence of shiny...")
     is_shiny, correlation = atf.contains_sound(shiny_template_file, game_recording)
     # Plot correlation if required
-    if SAVE_PLOT:
+    if is_shiny and SAVE_PLOT:
         save_plot(correlation)
     return is_shiny
 
