@@ -11,8 +11,9 @@ import threading
 
 # Configuration variables
 FREQ = 44100             # Default sampling frequency
-REC_DURATION = 2.5       # Game sound recording duration [s]
-BATTLE_LOADING_TIME = 9.2  # Battle loading time [s]
+REC_DURATION = 4       # Game sound recording duration [s]
+GAME_LOADING_TIME = 32   # Game loading time [s]
+BATTLE_LOADING_TIME = 11  # Battle loading time [s]
 SAVE_PLOT = False        # Save correlation plot
 
 # Template audio file
@@ -30,6 +31,7 @@ def save_plot(correlation):
     fig.savefig(plot_file)
     permission = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH
     os.chmod(plot_file, permission)
+    plt.close(fig)
 
 
 def record_and_check_shiny(freq, shiny_template_file, recording_duration):
@@ -81,7 +83,9 @@ if __name__ == "__main__":
     SAVE_PLOT = args.plot_correlation
 
     # Initialize and connect virtual game controller, then go back to game
+    print("Initializing...")
     nx = nxbt.Nxbt()
+    time.sleep(5)  # Add delay for the Raspberry Pi
     controller = synchronize_controller(nx)
     nx.macro(controller, macros.GO_BACK_TO_GAME_AFTER_SYNC)
 
@@ -105,3 +109,4 @@ if __name__ == "__main__":
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
             nx.macro(controller, macros.RESET_GAME)
+            busy_wait(controller, GAME_LOADING_TIME)
