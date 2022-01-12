@@ -42,7 +42,7 @@ def record_and_check_shiny(freq, shiny_template_file, recording_duration):
     print("Checking presence of shiny...")
     is_shiny, correlation = atf.contains_sound(shiny_template_file, game_recording)
     # Plot correlation if required
-    if SAVE_PLOT:
+    if is_shiny and SAVE_PLOT:
         save_plot(correlation)
     return is_shiny
 
