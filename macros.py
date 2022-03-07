@@ -36,15 +36,15 @@ A 0.1s
 """
 
 RELOAD_MAP = """
-L_STICK@+000-100 5s
+L_STICK@+000-100 3.1s
 0.1s
-L_STICK@+000+100 5s
+L_STICK@+000+100 3.1s
 """
 
 RUN_FROM_BATTLE = """
-DPAD_DOWN 0.5s
-A 0.1s
-0.2s
+LOOP 3
+    DPAD_DOWN 0.1s
+    0.1s
 A 0.1s
 """
 
@@ -56,6 +56,12 @@ A 0.1s
 BUSY_WAIT = """
 LOOP {}
     A 0.1s
+    0.1s
+"""
+
+BUSY_WAIT_B = """
+LOOP {}
+    B 0.1s
     0.1s
 """
 
