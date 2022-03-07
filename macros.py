@@ -35,6 +35,19 @@ A 0.1s
 A 0.1s
 """
 
+RELOAD_MAP = """
+L_STICK@+000-100 5s
+0.1s
+L_STICK@+000+100 5s
+"""
+
+RUN_FROM_BATTLE = """
+DPAD_DOWN 0.5s
+A 0.1s
+0.2s
+A 0.1s
+"""
+
 SLEEP_MODE = """
 HOME 2s
 A 0.1s

@@ -92,7 +92,7 @@ if __name__ == "__main__":
     is_shiny = False
     while not is_shiny:
         # Initiate battle with Pokemon
-        nx.macro(controller, macros.START_BATTLE)
+        #nx.macro(controller, macros.START_BATTLE)
         # Wait for the shiny sparkles to appear,
         # while using the controller to prevent it from disconnecting
         busy_wait(controller, BATTLE_LOADING_TIME)
@@ -108,5 +108,5 @@ if __name__ == "__main__":
             # Not shiny, reset game
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
-            nx.macro(controller, macros.RESET_GAME)
-            busy_wait(controller, GAME_LOADING_TIME)
+            nx.macro(controller, macros.RELOAD_MAP)
+            #busy_wait(controller, GAME_LOADING_TIME)
