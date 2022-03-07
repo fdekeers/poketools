@@ -15,6 +15,10 @@ A 0.1s
 1s
 """
 
+##########################
+# MACROS FOR SHINY RESET #
+##########################
+
 START_BATTLE = """
 A 0.1s
 """
@@ -40,4 +44,20 @@ BUSY_WAIT = """
 LOOP {}
     A 0.1s
     0.1s
+"""
+
+
+#######################
+# MACROS FOR EXP FARM #
+#######################
+
+STEPS_RECHARGE = """
+L_STICK@+000+100 0.1s
+L_STICK@-100-000 0.1s
+L_STICK@+000-100 0.1s
+L_STICK@+100+000 0.1s
+"""
+
+BATTLE = """
+
 """

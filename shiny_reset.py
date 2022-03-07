@@ -1,6 +1,6 @@
 import os
 import stat
-import audio_template_finder as atf
+import audio
 import matplotlib.pyplot as plt
 import nxbt
 import argparse
@@ -37,10 +37,10 @@ def save_plot(correlation):
 def record_and_check_shiny(freq, shiny_template_file, recording_duration):
     # Record game sound
     print("Recording game sound...")
-    game_recording = atf.record_game_sound(freq, recording_duration)
+    game_recording = audio.record_game_sound(freq, recording_duration)
     # Check if recording includes shiny sparkles
     print("Checking presence of shiny...")
-    is_shiny, correlation = atf.contains_sound(shiny_template_file, game_recording)
+    is_shiny, correlation = audio.contains_sound(shiny_template_file, game_recording)
     # Plot correlation if required
     if is_shiny and SAVE_PLOT:
         save_plot(correlation)
