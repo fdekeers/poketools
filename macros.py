@@ -1,6 +1,4 @@
-"""
-List of macros used by the virtual controller.
-"""
+# List of macros used by the virtual controller.
 
 GO_BACK_TO_GAME_AFTER_SYNC = """
 2s

@@ -1,3 +1,4 @@
+# handle shiny resets
 import os
 import stat
 import audio
@@ -10,21 +11,26 @@ import threading
 
 
 # Configuration variables
-FREQ = 44100             # Default sampling frequency
-REC_DURATION = 4       # Game sound recording duration [s]
-GAME_LOADING_TIME = 32   # Game loading time [s]
+FREQ = 44100                # Default sampling frequency
+REC_DURATION = 4            # Game sound recording duration [s]
+GAME_LOADING_TIME = 32      # Game loading time [s]
 BATTLE_LOADING_TIME = 11.7  # Battle loading time [s]
-SAVE_PLOT = False        # Save correlation plot
+SAVE_PLOT = False           # Save correlation plot
 
 # Template audio file
-script_directory = os.path.dirname(os.path.abspath(__file__))
-SHINY_AUDIO_FILE = f"{script_directory}/template_sounds/shiny/template_cropped.wav"
+script_directory = os.path.dirname(os.path.abspath(__file__))  # current directory
+SHINY_AUDIO_FILE = f"{script_directory}/template_sounds/shiny/template_cropped.wav"  # expected shiny sound to find
 
 # Number of resets
-number_of_resets = 0
+number_of_resets = 0        # current resets done
 
 
 def save_plot(correlation):
+    """
+    save a plot of the correlation between the recorded game sound and the expected shiny sound to find
+    @param correlation: correlation between 2 signals
+    @return: None. Save a plot of the correlation into correlation.png
+    """
     fig, ax = plt.subplots()
     ax.plot(correlation)
     plot_file = f"{script_directory}/correlation.png"
@@ -35,6 +41,13 @@ def save_plot(correlation):
 
 
 def record_and_check_shiny(freq, shiny_template_file, recording_duration):
+    """
+    record the sound from the game and tell if it is a shiny sound
+    @param freq: frequency for the recording
+    @param shiny_template_file: file where the sound for shiny pokemon is written
+    @param recording_duration: duration for the recording
+    @return: True if the sound from the game contained a shiny pokemon
+    """
     # Record game sound
     print("Recording game sound...")
     game_recording = audio.record_game_sound(freq, recording_duration)
@@ -48,6 +61,12 @@ def record_and_check_shiny(freq, shiny_template_file, recording_duration):
 
 
 def synchronize_controller(nx):
+    """
+    connect the controller for the first time
+    wait for the user to allow the controller to connect, through the menu
+    @param nx: nxbt instance
+    @return: connected controller
+    """
     controller = nx.create_controller(nxbt.PRO_CONTROLLER)
     print('Please go to the "Change Grip/Order" menu of your Nintendo Switch, to connect the virtual controller.')
     nx.wait_for_connection(controller)
@@ -56,22 +75,54 @@ def synchronize_controller(nx):
 
 
 def reconnect_controller(nx):
-    controller = nx.create_controller(nxbt.PRO_CONTROLLER,
-                                      reconnect_address=nx.get_switch_addresses())
+    """
+    reconnect the controller if it was not detected anymore
+    wait for several seconds as the creation of a controller takes some time
+    @param nx: nxbt instance
+    @return: reconnected controller
+    """
+    controller = nx.create_controller(nxbt.PRO_CONTROLLER, reconnect_address=nx.get_switch_addresses())
     time.sleep(5)
     return controller
 
 
 def busy_wait(controller, seconds):
-    iterations = int(seconds * 5)
-    nx.macro(controller, macros.BUSY_WAIT.format(iterations))
+    """
+    press several time on the A key to ensure that the controller does not get disconnected
+    @param controller: controller connected to the switch
+    @param seconds: duration of the busy wait, in seconds
+    @return: None. Press A key several time
+    """
+    busy_wait_macro(controller, macros.BUSY_WAIT.format(int(seconds * 5)))
+
 
 def busy_wait_b(controller, seconds):
-    iterations = int(seconds * 5)
-    nx.macro(controller, macros.BUSY_WAIT_B.format(iterations))
+    """
+    press several time on the N key to ensure that the controller does not get disconnected
+    @param controller: controller connected to the switch
+    @param seconds: duration of the busy wait, in seconds
+    @return: None. Press B key several time
+    """
+    busy_wait_macro(controller, macros.BUSY_WAIT_B.format(int(seconds * 5)))
+
+
+def busy_wait_macro(controller, macro):
+    """
+    send a macro to the controller using busy_wait
+    @param controller: controller connected to the switch
+    @param macro: macro sent to the controller
+    @return: None. Execute the macro
+    """
+    nx.macro(controller, macro)
 
 
 def busy_wait_background(controller, seconds):
+    """
+    starts a thread doing a busy wait operation
+    @param controller:
+    @param seconds:
+    @return:
+    """
     thread = threading.Thread(target=busy_wait, args=(controller, seconds))
     thread.start()
 
