@@ -11,12 +11,11 @@ import threading
 
 
 # Configuration variables
-FREQ = 44100                                # Default sampling frequency
-REC_DURATION = 4                            # Game sound recording duration [s]
-GAME_LOADING_TIME = 32                      # Game loading time [s]
-BATTLE_LOADING_TIME = 11.7                  # Battle loading time [s]
-START_BATTLE_MACRO = macros.START_BATTLE    # Set battle-starting macro for default scenario
-SAVE_PLOT = False                           # Save correlation plot
+FREQ = 44100                # Default sampling frequency
+REC_DURATION = 4            # Game sound recording duration [s]
+GAME_LOADING_TIME = 36      # Game loading time [s] (Longer than the original script)
+BATTLE_LOADING_TIME = 23    # Battle loading time [s] (Longer than the original script)
+SAVE_PLOT = False           # Save correlation plot
 
 # Template audio file
 script_directory = os.path.dirname(os.path.abspath(__file__))  # current directory
@@ -134,19 +133,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     help = "Use this flag to save a plot of the correlation between the recorded audio " \
            "and the shiny sparkles audio template."
-    help_scenario = "Use this flag to specify what scenario the macros and timings should be set for."
     parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
-    parser.add_argument("-s", "--scenario", help=help_scenario, action="store_const", choice=["arceus", "default"])
-    parser.add_argument("-c", "--capture", help="Capture a video or screenshot once a shiny is found.", action="store_const", choice=["video", "screenshot"])
     args = parser.parse_args()
     SAVE_PLOT = args.plot_correlation
-
-    # Reconfigure settings for Arceus's scenario
-    if args.scenario == "arceus":
-        GAME_LOADING_TIME = 36      # Hall of Origin takes longer to load
-        BATTLE_LOADING_TIME = 23    # Arceus's animations take longer
-        START_BATTLE_MACRO = macros.START_BATTLE_ARCEUS
-
 
     # Initialize and connect virtual game controller, then go back to game
     print("Initializing...")
@@ -159,33 +148,27 @@ if __name__ == "__main__":
     while not is_shiny:
         # Initiate battle with Pokemon
         print(f"Initiating a battle.")
-        nx.macro(controller, START_BATTLE_MACRO)
+        nx.macro(controller, macros.START_BATTLE_ARCEUS)
         # Wait for the shiny sparkles to appear,
         # while using the controller to prevent it from disconnecting
-        busy_wait(controller, BATTLE_LOADING_TIME)
+        busy_wait_b(controller, BATTLE_LOADING_TIME)
         # Record game sound, and check if shiny sparkles are present
         busy_wait_background(controller, REC_DURATION)
         is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
         if is_shiny:
             print(f"Shiny found after {number_of_resets} resets.")
             # Shiny ! Put console in sleep mode
-            if args.capture == "video": 
-                nx.macro(controller, macros.VIDEO)
-                busy_wait_b(controller, 8)
-            elif args.capture == "screenshot":
-                nx.macro(controller, macros.SCREENSHOT)
+            nx.macro(controller, macros.VIDEO)
+            busy_wait_b(controller, 8)
             nx.macro(controller, macros.SLEEP_MODE)
             exit(0)
         else:
             # Not shiny, reset game
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
-            if args.scenario = "arceus":
-                nx.macro(controller, macors.RESET_GAME)
-                busy_wait(controller, GAME_LOADING_TIME)
-            else:
-                busy_wait_b(controller, 4)
-                nx.macro(controller, macros.RUN_FROM_BATTLE)
-                busy_wait(controller, 4.5)
-                nx.macro(controller, macros.RELOAD_MAP)
-                #busy_wait(controller, GAME_LOADING_TIME)
+            # busy_wait_b(controller, 4)
+            # nx.macro(controller, macros.RUN_FROM_BATTLE)
+            # busy_wait(controller, 4.5)
+            # nx.macro(controller, macros.RELOAD_MAP)
+            nx.macro(controller, macors.RESET_GAME)
+            busy_wait(controller, GAME_LOADING_TIME)
