@@ -136,8 +136,8 @@ if __name__ == "__main__":
            "and the shiny sparkles audio template."
     help_scenario = "Use this flag to specify what scenario the macros and timings should be set for."
     parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
-    parser.add_argument("-s", "--scenario", help=help_scenario, action="store_const", choice=["arceus", "default"])
-    parser.add_argument("-c", "--capture", help="Capture a video or screenshot once a shiny is found.", action="store_const", choice=["video", "screenshot"])
+    parser.add_argument("-s", "--scenario", help=help_scenario, choices=["arceus", "default"])
+    parser.add_argument("-c", "--capture", help="Capture a video or screenshot once a shiny is found.", choices=["video", "screenshot"])
     args = parser.parse_args()
     SAVE_PLOT = args.plot_correlation
 
@@ -180,8 +180,8 @@ if __name__ == "__main__":
             # Not shiny, reset game
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
-            if args.scenario = "arceus":
-                nx.macro(controller, macors.RESET_GAME)
+            if args.scenario == "arceus":
+                nx.macro(controller, macros.RESET_GAME)
                 busy_wait(controller, GAME_LOADING_TIME)
             else:
                 busy_wait_b(controller, 4)
