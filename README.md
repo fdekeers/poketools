@@ -1,7 +1,8 @@
 # Pokétools
 
-By François DE KEERSMAEKER ([fdekeers](https://github.com/fdekeers))
-and Augustin DELECLUSE ([augustindelecluse](https://github.com/augustindelecluse)).
+By François DE KEERSMAEKER ([fdekeers](https://github.com/fdekeers)),
+Augustin DELECLUSE ([augustindelecluse](https://github.com/augustindelecluse)),
+and CDMcKinley ([cdmckinley](https://github.com/cdmckinley)).
 
 Two tools to automate boring and repetitive tasks in Pokémon Brilliant Diamond/Shining Pearl,
 namely:
@@ -43,13 +44,18 @@ corresponds to your Pokémon.
 
 ### Usage
 ```shell
-sudo python3 shiny_reset.py [-p]
+sudo python3 shiny_reset.py [-p] [-s arceus/default] [-c screenshot/video]
 ```
 
 Use option `-p` or `--plot-correlation` to save a graph showing the signal correlation
 between the game sound recording and the template sound of the shiny sparkles,
 metric that is used to detect if the shiny sparkles are present in the recording.
 
+Use option `-s` or `--scenario`, followed by `arceus` to hunt Arceus as opposed to other
+encounters. (W.I.P.)
+
+Use option `-c` or `--capture`, followed by `screenshot` or `video` to capture a screenshot
+or video upon finding a shiny. (W.I.P.)
 
 ## Masuda breeding
 

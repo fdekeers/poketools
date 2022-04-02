@@ -21,12 +21,16 @@ START_BATTLE = """
 A 0.1s
 """
 
+START_BATTLE_ARCEUS = """
+L_STICK@+000+100 1.0s
+"""
+
 RESET_GAME = """
 HOME 0.05s
 0.5s
 B 0.1s
 0.2s
-X 0.1s
+Y 0.1s
 0.2s
 A 0.1s
 0.3s
@@ -62,7 +66,17 @@ LOOP {}
     B 0.1s
     0.1s
 """
+#########################################
+# MACROS FOR CAPTURING SCREENSHOT/VIDEO #
+#########################################
 
+SCREENSHOT = """
+CAPTURE 0.1s
+"""
+
+VIDEO = """
+CAPTURE 1.0s
+"""
 
 #######################
 # MACROS FOR EXP FARM #
