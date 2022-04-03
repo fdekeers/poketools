@@ -62,6 +62,28 @@ or video upon finding a shiny. (W.I.P.)
 WORK IN PROGRESS
 
 
+## Troubleshooting
+
+Here, we will gather some known issues, and propose potential fixes.
+
+### PaAlsaStreamComponent_BeginPolling: Assertion `ret == self->nfds' failed.
+
+If this error occurs, you may try to install PortAudio from the source.
+To do this, do the following:
+
+```shell
+sudo apt-get remove libportaudio2
+sudo apt-get install libasound2-dev
+git clone -b alsapatch https://github.com/gglockner/portaudio
+cd portaudio
+./configure && make
+sudo make install
+sudo ldconfig
+cd ..
+```
+
+Source: https://stackoverflow.com/questions/59006083/how-to-install-portaudio-on-pi-properly
+
 ## Special thanks
 
 We would like to thank the following people,
