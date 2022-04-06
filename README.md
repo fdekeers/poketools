@@ -13,7 +13,7 @@ namely:
 
 Use this tool to automate the reset of stationary Pokémon,
 in order to shiny hunt them.
-It detects if the Pokemon is shiny by detecting the sound made by the shiny sparkles,
+It detects if the Pokémon is shiny by detecting the sound made by the shiny sparkles,
 and automates the game reset if not.
 The tool puts the Nintendo Switch in sleep mode
 when the Pokémon has been detected to be shiny,
@@ -36,26 +36,35 @@ and that your character is placed just in front of the stationary Pokémon.
 - Activate Bluetooth on your computer.
 - Disconnect all wired controllers from your console.
 - Go to the "Change Grip/Order" menu of your Nintendo Switch.
-- As different Pokémon can have different input sequences needed to start the battle,
-make sure the `START_BATTLE` macro, in the [macros.py](macros.py) file,
-corresponds to your Pokémon.
 - It is preferable to mute the game music and Pokémon cries
 (not the sound effects, as they are used to detect if the Pokémon is shiny or not).
 
 ### Usage
 ```shell
-sudo python3 shiny_reset.py [-p] [-s arceus/default] [-c screenshot/video]
+sudo python3 shiny_reset.py [-s CONFIG_NAME] [-c screenshot|video] [-p]
 ```
+
+Use option `-s` or `--scenario` to indicate which scenario configuration you want to use,
+i.e. which Pokémon you are hunting.
+`CONFIG_NAME` is the name, without extension, of the Python file describing the configuration for this scenario.
+All configuration files are in the `configs` directory.
+Currently, the following scenarios are implemented:
+- `general.py`: general macros used for any scenario, should not be modified.
+- `ramanas.py`: configuration for Pokémon that are encountered in the Ramanas park.
+Default configuration if no scenario is provided as command line argument.
+- `shaymin.py`: configuration for Shaymin, encountered in the Flower Paradise.
+- `arceus.py`: configuration for Arceus, encountered in the Hall of Origin.
+- `darkrai.py`: configuration for Darkrai, encountered on the New Moon Island. (IN PROGRESS)
+
+If no configuration matches the Pokémon you want to hunt,
+please contribute by adding a configuration file corresponding to this Pokémon.
 
 Use option `-p` or `--plot-correlation` to save a graph showing the signal correlation
 between the game sound recording and the template sound of the shiny sparkles,
 metric that is used to detect if the shiny sparkles are present in the recording.
 
-Use option `-s` or `--scenario`, followed by `arceus` to hunt Arceus as opposed to other
-encounters. (W.I.P.)
-
 Use option `-c` or `--capture`, followed by `screenshot` or `video` to capture a screenshot
-or video upon finding a shiny. (W.I.P.)
+or video upon finding a shiny.
 
 ## Masuda breeding
 
