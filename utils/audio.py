@@ -81,3 +81,11 @@ def record_and_save(freq, duration, filename):
     recording = sd.rec(int(duration * freq), samplerate=freq, channels=1)
     sd.wait()
     wavfile.write(filename, freq, duration)
+
+def assign_device(devicename):
+    try:
+        sd.check_input_settings(device=devicename)
+        sd.default.device = devicename
+    except:
+        print("Device settings not supported")
+        exit()
