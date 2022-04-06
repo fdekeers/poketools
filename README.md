@@ -70,7 +70,7 @@ Use option `-c` or `--capture`, followed by `screenshot` or `video` to capture a
 or video upon finding a shiny.
 
 Use option `-d` os `--device`, followed by the name of your audio input device wrapped in quotes,
-to select a specific audio device.
+to select a specific audio device. The device names can be listed with: `python3 -m sounddevice`
 
 ## Masuda breeding
 
