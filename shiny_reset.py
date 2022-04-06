@@ -20,7 +20,7 @@ script_directory = os.path.dirname(os.path.abspath(__file__))  # current directo
 SHINY_AUDIO_FILE = f"{script_directory}/template_sounds/shiny/template_cropped.wav"  # expected shiny sound to find
 
 # Number of resets
-number_of_resets = 0        # current resets done
+number_of_resets = 0
 
 
 def save_plot(correlation):
@@ -129,10 +129,6 @@ if __name__ == "__main__":
 
     # Command line arguments
     parser = argparse.ArgumentParser()
-    # Plot correlation
-    help = "Use this flag to save a plot of the correlation between the recorded audio " \
-           "and the shiny sparkles audio template."
-    parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
     # Scenario (Pokemon we are trying to catch)
     possible_scenarios = [filename.split(".")[0] for filename in os.listdir("configs") if "general" not in filename]
     help = "Use this flag to specify what scenario the macros and timings should be set for.\n" \
@@ -141,6 +137,10 @@ if __name__ == "__main__":
     # Capture screenshot or video when shiny is found
     help = "Capture a video or screenshot once a shiny is found."
     parser.add_argument("-c", "--capture", help=help, choices=["video", "screenshot"])
+    # Plot correlation
+    help = "Use this flag to save a plot of the correlation between the recorded audio " \
+           "and the shiny sparkles audio template."
+    parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
     args = parser.parse_args()
     config = getattr(__import__("configs", fromlist=[f"{args.scenario}"]), f"{args.scenario}")
     SAVE_PLOT = args.plot_correlation
