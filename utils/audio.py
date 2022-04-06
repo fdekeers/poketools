@@ -1,4 +1,7 @@
-# record and scan the sound from the switch
+"""
+Audio utilities to record and compare audio files.
+"""
+
 import scipy.io.wavfile as wavfile
 import sounddevice as sd
 from scipy import signal

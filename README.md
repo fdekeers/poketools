@@ -1,13 +1,16 @@
 # Pokétools
 
-By François DE KEERSMAEKER ([fdekeers](https://github.com/fdekeers)),
-Augustin DELECLUSE ([augustindelecluse](https://github.com/augustindelecluse)),
-and CDMcKinley ([cdmckinley](https://github.com/cdmckinley)).
-
-Two tools to automate boring and repetitive tasks in Pokémon Brilliant Diamond/Shining Pearl,
+Three tools to automate boring and repetitive tasks in Pokémon Brilliant Diamond/Shining Pearl,
 namely:
 - Stationary Pokémon shiny reset
 - Masuda breeding (WORK IN PROGRESS)
+- Experience farming (WORK IN PROGRESS)
+
+### Contributors
+
+- François DE KEERSMAEKER ([fdekeers](https://github.com/fdekeers))
+- Augustin DELECLUSE ([augustindelecluse](https://github.com/augustindelecluse))
+- CDMcKinley ([cdmckinley](https://github.com/cdmckinley))
 
 ## Stationary Pokémon shiny reset
 
@@ -67,6 +70,11 @@ Use option `-c` or `--capture`, followed by `screenshot` or `video` to capture a
 or video upon finding a shiny.
 
 ## Masuda breeding
+
+WORK IN PROGRESS
+
+
+## Experience farming
 
 WORK IN PROGRESS
 

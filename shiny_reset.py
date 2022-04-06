@@ -1,11 +1,14 @@
-# handle shiny resets
+"""
+Automates resets for shiny hunting stationary Pokémon.
+"""
+
 import os
 import stat
-import audio
+from utils import audio
+from utils.controller import Controller
 import matplotlib.pyplot as plt
-import nxbt
 import argparse
-import configs.general as general
+from configs import general
 import time
 import threading
 
@@ -58,73 +61,6 @@ def record_and_check_shiny(freq, shiny_template_file, recording_duration):
     return is_shiny
 
 
-def synchronize_controller(nx):
-    """
-    connect the controller for the first time
-    wait for the user to allow the controller to connect, through the menu
-    @param nx: nxbt instance
-    @return: connected controller
-    """
-    controller = nx.create_controller(nxbt.PRO_CONTROLLER)
-    print('Please go to the "Change Grip/Order" menu of your Nintendo Switch, to connect the virtual controller.')
-    nx.wait_for_connection(controller)
-    print("Pro controller connected !")
-    return controller
-
-
-def reconnect_controller(nx):
-    """
-    reconnect the controller if it was not detected anymore
-    wait for several seconds as the creation of a controller takes some time
-    @param nx: nxbt instance
-    @return: reconnected controller
-    """
-    controller = nx.create_controller(nxbt.PRO_CONTROLLER, reconnect_address=nx.get_switch_addresses())
-    time.sleep(5)
-    return controller
-
-
-def busy_wait(controller, seconds):
-    """
-    press several time on the A key to ensure that the controller does not get disconnected
-    @param controller: controller connected to the switch
-    @param seconds: duration of the busy wait, in seconds
-    @return: None. Press A key several time
-    """
-    busy_wait_macro(controller, general.BUSY_WAIT.format(int(seconds * 5)))
-
-
-def busy_wait_b(controller, seconds):
-    """
-    press several time on the N key to ensure that the controller does not get disconnected
-    @param controller: controller connected to the switch
-    @param seconds: duration of the busy wait, in seconds
-    @return: None. Press B key several time
-    """
-    busy_wait_macro(controller, general.BUSY_WAIT_B.format(int(seconds * 5)))
-
-
-def busy_wait_macro(controller, macro):
-    """
-    send a macro to the controller using busy_wait
-    @param controller: controller connected to the switch
-    @param macro: macro sent to the controller
-    @return: None. Execute the macro
-    """
-    nx.macro(controller, macro)
-
-
-def busy_wait_background(controller, seconds):
-    """
-    starts a thread doing a busy wait operation
-    @param controller:
-    @param seconds:
-    @return:
-    """
-    thread = threading.Thread(target=busy_wait, args=(controller, seconds))
-    thread.start()
-
-
 if __name__ == "__main__":
 
     # Command line arguments
@@ -146,36 +82,33 @@ if __name__ == "__main__":
     SAVE_PLOT = args.plot_correlation
 
     # Initialize and connect virtual game controller, then go back to game
-    print("Initializing...")
-    nx = nxbt.Nxbt()
-    time.sleep(5)  # Add delay for the Raspberry Pi
-    controller = synchronize_controller(nx)
-    nx.macro(controller, general.GO_BACK_TO_GAME_AFTER_SYNC)
+    controller = Controller()
+    controller.sync_and_go_back()
 
     is_shiny = False
     while not is_shiny:
         # Initiate battle with Pokemon
         print(f"Initiating a battle.")
-        nx.macro(controller, config.START_BATTLE)
+        controller.macro(config.START_BATTLE)
         # Wait for the shiny sparkles to appear,
         # while using the controller to prevent it from disconnecting
-        busy_wait(controller, config.BATTLE_LOADING_TIME)
+        controller.busy_wait(config.BATTLE_LOADING_TIME)
         # Record game sound, and check if shiny sparkles are present
-        busy_wait_background(controller, REC_DURATION)
+        controller.busy_wait_background(REC_DURATION)
         is_shiny = record_and_check_shiny(FREQ, SHINY_AUDIO_FILE, REC_DURATION)
         if is_shiny:
             print(f"Shiny found after {number_of_resets} resets.")
             # Shiny ! Put console in sleep mode
             if args.capture == "video": 
-                nx.macro(controller, general.VIDEO)
-                busy_wait_b(controller, 8)
+                controller.macro(general.VIDEO)
+                controller.busy_wait_b(8)
             elif args.capture == "screenshot":
-                nx.macro(controller, general.SCREENSHOT)
-            nx.macro(controller, general.SLEEP_MODE)
+                controller.macro(general.SCREENSHOT)
+            controller.macro(general.SLEEP_MODE)
             exit(0)
         else:
             # Not shiny, reset game
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
-            nx.macro(controller, config.RESET_GAME)
-            busy_wait(controller, config.GAME_LOADING_TIME)
+            controller.macro(config.RESET_GAME)
+            controller.busy_wait(config.GAME_LOADING_TIME)
