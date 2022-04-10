@@ -69,6 +69,9 @@ metric that is used to detect if the shiny sparkles are present in the recording
 Use option `-c` or `--capture`, followed by `screenshot` or `video` to capture a screenshot
 or video upon finding a shiny.
 
+Use option `-d` os `--device`, followed by the name of your audio input device wrapped in quotes,
+to select a specific audio device. The device names can be listed with: `python3 -m sounddevice`
+
 ## Masuda breeding
 
 WORK IN PROGRESS

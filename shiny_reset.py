@@ -77,9 +77,15 @@ if __name__ == "__main__":
     help = "Use this flag to save a plot of the correlation between the recorded audio " \
            "and the shiny sparkles audio template."
     parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
+    help = "Select an audio input device by its name."
+    parser.add_argument("-d", "--device", help="Select an audio device by its name")
     args = parser.parse_args()
     config = getattr(__import__("configs", fromlist=[f"{args.scenario}"]), f"{args.scenario}")
     SAVE_PLOT = args.plot_correlation
+
+    # Confirm audio device exists
+    if (args.device):
+        audio.assign_device(args.device)
 
     # Initialize and connect virtual game controller, then go back to game
     controller = Controller()
