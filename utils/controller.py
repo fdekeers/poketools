@@ -66,7 +66,7 @@ class Controller:
         @param seconds:
         @return:
         """
-        thread = threading.Thread(target=self.busy_wait, args=seconds)
+        thread = threading.Thread(target=self.busy_wait, args=[seconds])
         thread.start()
 
     def run_in_circles(self, steps):

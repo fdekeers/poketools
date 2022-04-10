@@ -48,16 +48,18 @@ sudo python3 shiny_reset.py [-s CONFIG_NAME] [-c screenshot|video] [-p]
 ```
 
 Use option `-s` or `--scenario` to indicate which scenario configuration you want to use,
-i.e. which Pokémon you are hunting.
-`CONFIG_NAME` is the name, without extension, of the Python file describing the configuration for this scenario.
+i.e. which Pokémon you are hunting, where `SCENARIO` is the name of the scenario.
 All configuration files are in the `configs` directory.
+Specific configuration files **must** start with `cfg_` to be recognized.
+However, for the `SCENARIO` command line argument, you only have to provide the scenario name,
+i.e. the name between `cfg_` and the file extension `.py` (e.g. `ramanas` or `arceus`).
 Currently, the following scenarios are implemented:
 - `general.py`: general macros used for any scenario, should not be modified.
-- `ramanas.py`: configuration for Pokémon that are encountered in the Ramanas park.
+- `cfg_ramanas.py`: configuration for Pokémon that are encountered in the Ramanas park.
 Default configuration if no scenario is provided as command line argument.
-- `shaymin.py`: configuration for Shaymin, encountered in the Flower Paradise.
-- `arceus.py`: configuration for Arceus, encountered in the Hall of Origin.
-- `darkrai.py`: configuration for Darkrai, encountered on the New Moon Island. (IN PROGRESS)
+- `cfg_shaymin.py`: configuration for Shaymin, encountered in the Flower Paradise.
+- `cfg_arceus.py`: configuration for Arceus, encountered in the Hall of Origin.
+- `cfg_darkrai.py`: configuration for Darkrai, encountered on the New Moon Island. (IN PROGRESS)
 
 If no configuration matches the Pokémon you want to hunt,
 please contribute by adding a configuration file corresponding to this Pokémon.

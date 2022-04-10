@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # Command line arguments
     parser = argparse.ArgumentParser()
     # Scenario (Pokemon we are trying to catch)
-    possible_scenarios = [filename.split(".")[0] for filename in os.listdir("configs") if ".cfg." in filename]
+    possible_scenarios = [filename.split(".")[0][4:] for filename in os.listdir("configs") if filename[0:4] == "cfg_"]
     help = "Use this flag to specify what scenario the macros and timings should be set for.\n" \
            "If the scenario you need is implemented, please contribute by adding it to the `configs` directory."
     parser.add_argument("-s", "--scenario", help=help, choices=possible_scenarios, default="ramanas")
@@ -77,14 +77,14 @@ if __name__ == "__main__":
     help = "Use this flag to save a plot of the correlation between the recorded audio " \
            "and the shiny sparkles audio template."
     parser.add_argument("-p", "--plot-correlation", help=help, action="store_true")
-    help = "Select an audio input device by its name."
-    parser.add_argument("-d", "--device", help="Select an audio device by its name")
+    help = "Select an audio input device by its name. Audio devices can be listed with `python3 -m sounddevice`."
+    parser.add_argument("-d", "--device", help=help)
     args = parser.parse_args()
-    config = getattr(__import__("configs", fromlist=[f"{args.scenario}"]), f"{args.scenario}")
+    config = getattr(__import__("configs", fromlist=[f"cfg_{args.scenario}"]), f"cfg_{args.scenario}")
     SAVE_PLOT = args.plot_correlation
 
     # Confirm audio device exists
-    if (args.device):
+    if args.device:
         audio.assign_device(args.device)
 
     # Initialize and connect virtual game controller, then go back to game
