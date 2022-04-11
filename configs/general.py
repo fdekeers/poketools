@@ -18,6 +18,13 @@ A 0.1s
 # MACROS FOR SHINY RESET #
 ##########################
 
+SELECT_USER = """
+LOOP {}
+    DPAD_RIGHT 0.1s
+    0.2s
+A 0.1s
+"""
+
 SLEEP_MODE = """
 HOME 2s
 A 0.1s
