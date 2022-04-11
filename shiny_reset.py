@@ -67,12 +67,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # Scenario (Pokemon we are trying to catch)
     possible_scenarios = [filename.split(".")[0][4:] for filename in os.listdir("configs") if filename[0:4] == "cfg_"]
-    help = "Use this flag to specify what scenario the macros and timings should be set for.\n" \
+    help = "Use this flag to specify what scenario the macros and timings should be set for." \
            "If the scenario you need is implemented, please contribute by adding it to the `configs` directory."
     parser.add_argument("-s", "--scenario", help=help, choices=possible_scenarios, default="ramanas")
     # Capture screenshot or video when shiny is found
     help = "Capture a video or screenshot once a shiny is found."
     parser.add_argument("-c", "--capture", help=help, choices=["video", "screenshot"])
+    # Support for consoles with multiple users
+    help = "Indicate the number of the user (1-8) that should be used to start the game, " \
+           "or 0 if there is only one user that is selected automatically."
+    parser.add_argument("-u", "--user", help=help, choices=list(range(0, 9)), default=0)
     # Plot correlation
     help = "Use this flag to save a plot of the correlation between the recorded audio " \
            "and the shiny sparkles audio template."
@@ -82,6 +86,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     config = getattr(__import__("configs", fromlist=[f"cfg_{args.scenario}"]), f"cfg_{args.scenario}")
     SAVE_PLOT = args.plot_correlation
+
+    # Force no user switch for Shaymin scenario
+    if args.scenario == "shaymin":
+        args.user = 0
 
     # Confirm audio device exists
     if args.device:
@@ -116,5 +124,5 @@ if __name__ == "__main__":
             # Not shiny, reset game
             number_of_resets += 1
             print(f"No shiny found. Reset n°{number_of_resets}.")
-            controller.macro(config.RESET_GAME)
+            controller.reset(config.RESET_GAME, int(args.user))
             controller.busy_wait(config.GAME_LOADING_TIME)
