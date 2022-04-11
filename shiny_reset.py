@@ -76,7 +76,8 @@ if __name__ == "__main__":
     # Support for consoles with multiple users
     help = "Indicate the number of the user (1-8) that should be used to start the game, " \
            "or 0 if there is only one user that is selected automatically."
-    parser.add_argument("-u", "--user", help=help, choices=list(range(0, 9)), default=0)
+    list_users = [str(u) for u in range(0, 9)]
+    parser.add_argument("-u", "--user", help=help, choices=list_users, default="0")
     # Plot correlation
     help = "Use this flag to save a plot of the correlation between the recorded audio " \
            "and the shiny sparkles audio template."
@@ -89,7 +90,7 @@ if __name__ == "__main__":
 
     # Force no user switch for Shaymin scenario
     if args.scenario == "shaymin":
-        args.user = 0
+        args.user = "0"
 
     # Confirm audio device exists
     if args.device:
