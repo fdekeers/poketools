@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # Command line arguments
     parser = argparse.ArgumentParser()
     # Scenario (Pokemon we are trying to catch)
-    possible_scenarios = [filename.split(".")[0][4:] for filename in os.listdir("configs") if filename[0:4] == "cfg_"]
+    possible_scenarios = [filename.split(".")[0][4:] for filename in os.listdir(f"{script_directory}/configs") if filename[0:4] == "cfg_"]
     help = "Use this flag to specify what scenario the macros and timings should be set for." \
            "If the scenario you need is implemented, please contribute by adding it to the `configs` directory."
     parser.add_argument("-s", "--scenario", help=help, choices=possible_scenarios, default="ramanas")
