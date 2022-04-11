@@ -64,8 +64,9 @@ Default configuration if no scenario is provided as command line argument.
 If no configuration matches the Pokémon you want to hunt,
 please contribute by adding a configuration file corresponding to this Pokémon.
 
-Use option `-u {0-8}` `--user {0-8}`, to indicate the number of the Switch user that should be used to start the game (1-8),
-or 0 if there is only one user that is selected automatically upon game start.
+Use option `-u {0-8}` or `--user {0-8}` to indicate the number of the Switch user that should be used to start the game (1-8),
+or 0 to skip user selection if there is only one user that is selected automatically upon game start.
+The default value is 0.
 
 Use option `-p` or `--plot-correlation` to save a graph showing the signal correlation
 between the game sound recording and the template sound of the shiny sparkles,
