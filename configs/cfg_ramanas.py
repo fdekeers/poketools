@@ -1,6 +1,6 @@
 # Timings
-GAME_LOADING_TIME = 35     # Game loading time [s]
-BATTLE_LOADING_TIME = 9.7  # Battle loading time [s]
+GAME_LOADING_TIME = 32     # Game loading time [s]
+BATTLE_LOADING_TIME = 9  # Battle loading time [s]
 
 
 ##########################
