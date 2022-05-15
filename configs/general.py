@@ -61,11 +61,14 @@ CAPTURE 1.0s
 #######################
 
 STEPS_CIRCLE = """
+PLUS 0.1s
+DPAD_RIGHT 0.1s
 LOOP {}
-    L_STICK@+000+100 0.1s
-    L_STICK@-100-000 0.1s
-    L_STICK@+000-100 0.1s
-    L_STICK@+100+000 0.1s
+    L_STICK@+100+000 0.13s
+    L_STICK@+000+100 0.13s
+    L_STICK@-100+000 0.13s
+    L_STICK@+000-100 0.13s
+L_STICK@+000+000 0.1s
 """
 
 BATTLE = """

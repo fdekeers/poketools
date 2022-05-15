@@ -20,4 +20,6 @@ if __name__ == "__main__":
 
     # Initialize and connect virtual game controller, then go back to game
     controller = Controller()
-    controller.sync_and_go_back()
+    #controller.sync_and_go_back()
+    controller.reconnect()
+    controller.run_in_circles(10)
