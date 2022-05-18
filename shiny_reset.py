@@ -9,8 +9,6 @@ from utils.controller import Controller
 import matplotlib.pyplot as plt
 import argparse
 from configs import general
-import time
-import threading
 
 
 # Configuration variables
