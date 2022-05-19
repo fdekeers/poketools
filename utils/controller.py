@@ -97,5 +97,5 @@ class Controller:
         @param steps: number of steps to complete
         @return: None
         """
-        loops = steps  # TODO: adapt loops variable with the number of steps one circle contains
-        self.macro(general.STEPS_CIRCLE.format(int(loops)-1))
+        loops = int(steps) - 1
+        self.macro(general.STEPS_CIRCLE.format(loops))

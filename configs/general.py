@@ -80,6 +80,10 @@ LOOP {}
 L_STICK@+000+000 0.1s
 """
 
+EGG_HATCHING = """
+A 0.1s
+"""
+
 
 #######################
 # MACROS FOR EXP FARM #
